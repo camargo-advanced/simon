@@ -11,7 +11,7 @@ This implementation makes use of the folowing open source libraries:
 - CGG
 
 And also the folowing design patterns:
-- Dinamic memory allocation
+- Dynamic memory allocation
 - Finite state machine using linked lists
 - Organization of code around objects
 
