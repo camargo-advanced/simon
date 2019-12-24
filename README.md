@@ -27,7 +27,7 @@ I suggest reading the folwoing chapters of the book prior to start working on th
 
 Those chapters explain step by step how to install and test the opensource toolkit required.
 
-You can also buy an e-book here: 
+You can buy an e-book here: 
 https://www.amazon.com/Beginning-STM32-Developing-FreeRTOS-libopencm3-ebook/dp/B07DGGHZN6/ref=sr_1_fkmr0_1?keywords=Beggining+STM32%2C+Developing+with+FreeRTOS%2C+libopencm3+and+GCC&qid=1577222240&sr=8-1-fkmr0
 
 For any questions or suggestions, please reach out to camargo.advanced@gmail.com
