@@ -44,6 +44,8 @@ void start_sound_frequency(uint16_t frequency)
 
     /* enable sound */
     timer_enable_counter(TIM2);
+    timer_enable_oc_output(TIM2, TIM_OC2);
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -55,6 +57,7 @@ Stop the sound.
 void stop_sound(void)
 {
     timer_disable_counter(TIM2);
+    timer_disable_oc_output(TIM2, TIM_OC2);
 }
 
 /*---------------------------------------------------------------------------*/

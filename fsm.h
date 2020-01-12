@@ -46,19 +46,20 @@ struct Fsm {
 };
 
 /* possible outcomes when transitioning states */
-typedef enum
+typedef enum Transition_status Transition_status;
+enum Transition_status
 {
     Phase_advance,  /* user has advanced to next phase */
     State_advance,  /* user has advanced to next state */
     Fsm_completed,  /* user has completed the fsm sucessfully */
     Fsm_failed      /* user has failed the fsm */
-} Transition_status;
+};
 
 /* function prototypes */
 Fsm * create_fsm(void);
-State * add_state_fsm(Fsm * fsm, uint32_t pushb_port, uint16_t pushb_pin,
+State * add_state_fsm(Fsm * const fsm, uint32_t pushb_port, uint16_t pushb_pin,
     uint32_t led_port, uint16_t led_pin, uint16_t frequency);
-Transition_status event_handler_fsm(Fsm * fsm, Event * e);
+Transition_status event_handler_fsm(Fsm * fsm, Event const * const e);
 void destroy_fsm(Fsm * p);
 
 #endif

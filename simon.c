@@ -18,8 +18,8 @@ Implementation of simon game.
 #include <libopencm3/stm32/gpio.h>
 
 /* prototypes of private functions */
-static void play_sequence_simon(Simon * simon);
-static void generate_new_game_sequence(Simon * simon);
+static void play_sequence_simon(Simon const * const simon);
+static void generate_new_game_sequence(Simon * const simon);
 
 /*---------------------------------------------------------------------------*/
 /** @brief Simon game constructor
@@ -63,7 +63,7 @@ Starts a new game, creates a new fsm.
 @param[in] simon Simon *. @ref simon
 */
 
-void setup_new_game_simon(Simon * simon)
+void setup_new_game_simon(Simon * const simon)
 {
     /* destroy fsm object if it already exists */
     if (simon->fsm) destroy_fsm(simon->fsm);
@@ -86,9 +86,9 @@ Create a new game sequence.
 @param[in] simon Simon *. @ref simon
 */
 
-static void generate_new_game_sequence(Simon * simon)
+static void generate_new_game_sequence(Simon * const simon)
 {
-    static uint16_t random;
+    uint16_t random;
         
     for (int8_t i = 0; i < simon->level; i++)
     {
@@ -123,7 +123,7 @@ Play the sequence for current phase.
 @param[in] simon Simon *. @ref simon
 */
 
-static void play_sequence_simon(Simon * simon)
+static void play_sequence_simon(Simon const * const simon)
 {
     /* leds should start turned off */
     for (int8_t i = 0; i < NUM_LEDS_WIRED; i++)
@@ -159,7 +159,7 @@ Play welcome sequence.
 @param[in] simon Simon *. @ref simon
 */
 
-void play_welcome_sequence_simon(Simon * simon)
+void play_welcome_sequence_simon(Simon const * const simon)
 {
     /* leds should start turned off */
     for (int8_t i = 0; i < NUM_LEDS_WIRED; i++)
@@ -183,7 +183,7 @@ Makes an event object to be processed by the fsm based on interrupt details rece
 @param[in] interrupt Interrupt type. @ref interrupt
 */
 
-void interrupt_handler_simon(Simon * simon, Interrupt interrupt)
+void interrupt_handler_simon(Simon * const simon, Interrupt interrupt)
 {
     Event event;
 
@@ -267,7 +267,7 @@ Handle the use event by executing the fsm transition and handling the game actio
 @param[in] e Event type. @ref e
 */
 
-void event_handler_simon(Simon * simon, Event * e)
+void event_handler_simon(Simon * const simon, Event const * const e)
 {
     /* execute the fsm transition */
     Transition_status ts = event_handler_fsm(simon->fsm, e);

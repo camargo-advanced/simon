@@ -101,6 +101,7 @@
 #define configUSE_MUTEXES		        0
 #define configCHECK_FOR_STACK_OVERFLOW	1
 #define configUSE_TASK_NOTIFICATIONS	1
+//#define configUSETASKFPU_SUPPORT        1   /* added by Marcelo Camargo on 1/8/2020 */
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		    0

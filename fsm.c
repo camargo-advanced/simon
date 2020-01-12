@@ -52,7 +52,7 @@ Add a state object to the liked list.
 @returns State *: pointer to fsm object.
 */
 
-State * add_state_fsm(Fsm * fsm, uint32_t pushb_port, uint16_t pushb_pin,
+State * add_state_fsm(Fsm * const fsm, uint32_t pushb_port, uint16_t pushb_pin,
                       uint32_t led_port, uint16_t led_pin, uint16_t frequency)
 {
     State * p = NULL;
@@ -96,7 +96,7 @@ Handle all game events, in this case push buttons events.
 @returns Transition_status: Transition_status enumeration.
 */
 
-Transition_status event_handler_fsm(Fsm * fsm, Event * e)
+Transition_status event_handler_fsm(Fsm * fsm, Event const * const e)
 {
     if (fsm->current_state != NULL &&
         fsm->current_state->pushb_port == e->pushb_port &&

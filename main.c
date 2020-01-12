@@ -23,6 +23,11 @@ Main entry point of the application.
 #include <libopencm3/cm3/nvic.h>
 #include <libopencm3/stm32/exti.h>
 
+/* used for stack overflow error */
+uint32_t volatile * const pClockEnablelReg = (uint32_t *) 0x40021018;
+uint32_t volatile * const pPorCConfiglHighReg = (uint32_t *) 0x40011004;
+uint32_t volatile * const pPortCOutputReg = (uint32_t *) 0x4001100c;
+
 /* prototypes of private functions */
 static void task_exti9_5_isr(void *args __attribute((unused)));
 static void task_game_welcome(void *args __attribute((unused)));
@@ -33,8 +38,8 @@ extern void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed portCHAR *
 TaskHandle_t xHandle_task_exti9_5_isr;
 TaskHandle_t xHandle_task_welcome;
 
-/* Global variable for the simon game */
-Simon * simon = NULL;
+/* Global variable for the simon game - private to this file */
+static Simon * simon = NULL;
 
 /*---------------------------------------------------------------------------*/
 /** @brief Isr for handling push buttons
@@ -103,7 +108,7 @@ static void task_exti9_5_isr(void *args __attribute__((unused)))
     for (;;)
     {
         /* ignores old and irrelevant interrupt event
-        by removing the existing notification */
+        by removing the existing notification, if any */
         xTaskNotifyWait(0, 0, &interrupt.value, pdMS_TO_TICKS(0));
 
         /* wait and captures new interrupt event */
@@ -165,7 +170,7 @@ int main(void)
     adc_setup();
 
     /* new simon game object */
-    simon = create_simon(LEVEL_4);
+    simon = create_simon(LEVEL_1);
 
     /* creates all tasks */
 	xTaskCreate(task_game_welcome, "GAME_STARTUP",
@@ -195,9 +200,30 @@ went wrong to the application programmer.
 void vApplicationStackOverflowHook(xTaskHandle *pxTask __attribute((unused)),
     signed portCHAR *pcTaskName __attribute((unused)))
 {
-    /* stops heart beat on indicating a failure */
-    gpio_clear(PORT_LED, PIN_LED_HEART_BEET);
+    /* enable clock for GPIOC */
+    *pClockEnablelReg |= (1 << 4);
+
+    /* configure GPIOC - clear 20th, 21st, 22nd and 23rd bits */
+    *pPorCConfiglHighReg &= ~(15 << 20);
+    /* set 21st bit */
+    *pPorCConfiglHighReg |= (1 << 21);
+
+    while(1)
+    {
+        /* turn pin 13 off */
+        *pPortCOutputReg |= (1 << 13);
+
+        for (int i=0; i<100000; i++) __asm("nop");
+
+        /* turn pin 13 on */
+        *pPortCOutputReg &= ~(1 << 13);
+
+        for (int i=0; i<100000; i++) __asm("nop");
+    }
     
-    while (1) /* Loop forever here */
-        __asm("nop");
+//    /* stops heart beat on indicating a failure */
+//    gpio_clear(PORT_LED, PIN_LED_HEART_BEET);
+//
+//    while (1) /* Loop forever here */
+//        __asm("nop");
 }

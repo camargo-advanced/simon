@@ -40,19 +40,26 @@ Definitions and function prototypes.
 #define WAIT_20_MS  20
 
 /* interrupt bit field structure */
-struct Interrupt_Data {
-    uint32_t pin_pushb_yellow : 1;
-    uint32_t pin_pushb_blue   : 1;
-    uint32_t pin_pushb_red    : 1;
-    uint32_t pin_pushb_green  : 1;
-    uint32_t falling_edge     : 1;
-};
+//struct Interrupt_Data {
+//    uint32_t pin_pushb_yellow : 1;
+//    uint32_t pin_pushb_blue   : 1;
+//    uint32_t pin_pushb_red    : 1;
+//    uint32_t pin_pushb_green  : 1;
+//    uint32_t falling_edge     : 1;
+//};
 
 /* interrupt class definition */
 typedef union Interrupt Interrupt;
 union Interrupt {
     uint32_t value;
-    struct Interrupt_Data bits;
+    struct {
+        uint32_t pin_pushb_yellow : 1;
+        uint32_t pin_pushb_blue   : 1;
+        uint32_t pin_pushb_red    : 1;
+        uint32_t pin_pushb_green  : 1;
+        uint32_t falling_edge     : 1;
+    } bits;
+//    struct Interrupt_Data bits;
 };
   
 /* simon class definition */
@@ -69,9 +76,8 @@ struct Simon
 /* function prototypes */
 Simon * create_simon(uint8_t level);
 void destroy_simon(Simon * p);
-void play_welcome_sequence_simon(Simon * simon);
-void event_handler_simon(Simon * simon, Event * e);
-void setup_new_game_simon(Simon * simon);
-void interrupt_handler_simon(Simon * simon, Interrupt interrupt);
-
+void play_welcome_sequence_simon(Simon const * const simon);
+void event_handler_simon(Simon * const simon, Event const * const e);
+void setup_new_game_simon(Simon * const simon);
+void interrupt_handler_simon(Simon * const simon, Interrupt interrupt);
 #endif
