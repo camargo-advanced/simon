@@ -8,7 +8,7 @@ The difficulty level should be set up in main function during the simon game obj
 This implementation makes use of the folowing open source libraries:
 - FreeRTOS
 - libopencm3
-- CGG
+- GCC
 
 And also the folowing design patterns:
 - Dynamic memory allocation
